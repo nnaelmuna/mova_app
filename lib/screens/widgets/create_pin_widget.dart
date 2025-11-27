@@ -29,9 +29,9 @@ class _PinFormState extends State<PinForm> {
     pin4FocusNode.dispose();
   }
 
-  void nextField({String? value, FocusNode? focusNode}) {
-    if (value.length != null && value.length == 1) {
-      focusNode?.requestFocus();
+  void nextField({required String value, required FocusNode focusNode}) {
+    if (value.length == 1) {
+      focusNode.requestFocus();
     }
   }
 

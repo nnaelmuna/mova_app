@@ -1,7 +1,37 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class ProfilePictureArea extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:mova_app/screens/image_source_modal.dart';
+
+class ProfilePictureArea extends StatefulWidget {
   const ProfilePictureArea({super.key});
+
+  @override
+  State<ProfilePictureArea> createState() => _ProfilePictureAreaState();
+}
+
+class _ProfilePictureAreaState extends State<ProfilePictureArea> {
+  // State untuk menyimpan file gambar yang dipilih
+  File? _selectedImage;
+  final Color primaryColor = const Color(0xFFE21220);
+
+  // Fungsi untuk menampilkan Bottom Sheet Modal
+  void _showSourceSelection() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return ImageSourceModal(
+          onImageSelected: (File imageFile) {
+            // Callback dari modal: Perbarui state dengan gambar baru
+            setState(() {
+              _selectedImage = imageFile;
+            });
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,26 +44,36 @@ class ProfilePictureArea extends StatelessWidget {
             child: CircleAvatar(
               radius: 50,
               backgroundColor: Colors.black26,
-              child: Icon(Icons.person, size: 100, color: Colors.black38),
+              // Tampilkan gambar yang dipilih, jika ada
+              backgroundImage: _selectedImage != null
+                  ? FileImage(_selectedImage!)
+                  : null,
+              // Tampilkan Icon default jika belum ada gambar
+              child: _selectedImage == null
+                  ? const Icon(
+                      Icons.person,
+                      size: 100,
+                      color: Colors.black38,
+                    )
+                  : null,
             ),
           ),
+          // Tombol Edit
           Positioned(
             bottom: 6,
             right: 4,
             child: GestureDetector(
-              onTap: () {
-                print('Edit photo clicked');
-              },
+              onTap: _showSourceSelection, // Panggil modal saat diklik
               child: Container(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Color(0xFFE21220),
-                  borderRadius: BorderRadius.circular(10)
+                  color: primaryColor, // Warna merah
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.edit,
                   color: Colors.white,
-                  size: 16
+                  size: 16,
                 ),
               ),
             ),
@@ -87,47 +127,10 @@ class PhoneInput extends StatelessWidget {
       controller: controller,
       hintText: 'Phone Number',
       keyboardType: TextInputType.number,
-      validator: (value) => value!.isEmpty ? 'Phone number cannot be empty' : null
+      validator: (value) => value?.isEmpty ?? true ? 'Phone cannot be empty' : null
     );
   }
 }
-
-// class GenderDropdown extends StatelessWidget {
-//   final String currentValue;
-//   final List<String> genders;
-//   final ValueChanged<String?> onChanged;
-
-//   const GenderDropdown({super.key, required this.currentValue, required this.genders, required this.onChanged});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         color: Colors.black,
-//         borderRadius: BorderRadius.circular(12.0),
-//       ),
-//       child: DropdownButtonFormField<String>(
-//         value: currentValue,
-//         icon: Icon(Icons.arrow_drop_down, color: Colors.grey), // Menghapus const
-//         decoration: InputDecoration(
-//           border: InputBorder.none,
-//           hintText: 'Gender',
-//           hintStyle: TextStyle(color: Colors.grey),
-//           contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 18.0),
-//         ),
-//         dropdownColor: Colors.black45,
-//         style: TextStyle(color: Colors.white), // Menghapus const
-//         items: genders.map<DropdownMenuItem<String>>((String value) {
-//           return DropdownMenuItem<String>(
-//             value: value,
-//             child: Text(value, style: TextStyle(color: Colors.white)), // Menghapus const
-//           );
-//         }).toList(),
-//         onChanged: onChanged,
-//       ),
-//     );
-//   }
-// }
 
 class ActionButtons extends StatelessWidget {
   final VoidCallback onSkip;
@@ -137,48 +140,45 @@ class ActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Row(
-        children: [
-          // Skip button
-          Expanded(
-            child: TextButton(
-              onPressed: onSkip,
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.grey[800],
-                padding: EdgeInsets.symmetric(vertical: 24),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(45),
-                ),
-              ),
-              child: Text(
-                'Skip',
-                style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
+    return Row(
+      children: [
+        // Skip button
+        Expanded(
+          child: TextButton(
+            onPressed: onSkip,
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.grey[800],
+              padding: EdgeInsets.symmetric(vertical: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(45),
               ),
             ),
-          ),
-          SizedBox(width: 15),
-          
-          // Continue button
-          Expanded(
-            child: ElevatedButton(
-              onPressed: onContinue,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFE21220),
-                padding: EdgeInsets.symmetric(vertical: 24),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(45),
-                ),
-              ),
-              child: Text(
-                'Continue',
-                style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
-              ),
+            child: Text(
+              'Skip',
+              style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
             ),
           ),
-        ],
-      ),
+        ),
+        SizedBox(width: 15),
+        
+        // Continue button
+        Expanded(
+          child: ElevatedButton(
+            onPressed: onContinue,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFFE21220),
+              padding: EdgeInsets.symmetric(vertical: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(45),
+              ),
+            ),
+            child: Text(
+              'Continue',
+              style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

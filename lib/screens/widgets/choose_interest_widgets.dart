@@ -19,14 +19,14 @@ class InterestChip extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
+        padding: EdgeInsets.symmetric(horizontal: 28, vertical: 16),
         decoration: BoxDecoration(
           color: isSelected ? Color(0xFFE21220) : Color(0xFF2C2C2C), 
           borderRadius: BorderRadius.circular(60),
         ),
         child: Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -53,7 +53,7 @@ class ActionButtons extends StatelessWidget {
             onPressed: onSkip,
             style: TextButton.styleFrom(
               backgroundColor: Color(0xFF2C2C2C),
-              padding: EdgeInsets.symmetric(vertical: 24),
+              padding: EdgeInsets.symmetric(vertical: 20),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(45)
               ),
@@ -72,7 +72,7 @@ class ActionButtons extends StatelessWidget {
             onPressed: onContinue,
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFFE21220),
-              padding: EdgeInsets.symmetric(vertical: 24),
+              padding: EdgeInsets.symmetric(vertical: 20),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(45),
               ),

@@ -64,7 +64,7 @@ class _ChooseInterestScreenState extends State<ChooseInterest> {
               'Choose Your Interest',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.bold
               ),
             )
@@ -75,7 +75,7 @@ class _ChooseInterestScreenState extends State<ChooseInterest> {
         children: [
           Positioned.fill(
             child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 100),
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 100),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -83,12 +83,11 @@ class _ChooseInterestScreenState extends State<ChooseInterest> {
                     'Choose your interests and get the best movie recommendations. Don\'t worry, you can always change it later.',
                     style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 16
+                      fontSize: 14
                     ),
                   ),
                   SizedBox(height: 30),
 
-                  // Grid Pilihan Minat
                   Wrap(
                     spacing: 10,
                     runSpacing: 10,
